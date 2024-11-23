@@ -8,17 +8,17 @@
           </div>
       </div>
   </template>
-  
+
   <script>
   export default {
     name: 'HomePage'
   }
   </script>
-  
+
   <style>
-  
+
   #page {
-    display: flex;  
+    display: flex;
     flex-direction: column;
     margin: -10px 0px 0px -10px;
     width: 102vw;
@@ -29,20 +29,20 @@
     background-size: cover;
     max-width: 100%;
   }
-  
+
   .page-content {
     margin-top: 20px;
     text-align: center;
     color: #f2e5bc;
   }
-  
+
   .page-content h1 {
-    font-family: 'JetBrains Mono'; 
+    font-family: 'JetBrains Mono';
   }
-  
+
   .page-content p {
     font-family: 'JetBrains Mono';
     font-size: 18px;
   }
-  
+
   </style>
