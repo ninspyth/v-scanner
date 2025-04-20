@@ -1,0 +1,71 @@
+{
+  "message": "Advanced Differential Scan completed successfully",
+  "scanned_at": "2025-03-21T23:58:11.608595859+05:30",
+  "time_elapsed": "5.240036389s",
+  "url": "http://testphp.vulnweb.com/login.php",
+  "vulnerabilities": [
+    {
+      "type": "Potential Time-Based CommandInjection",
+      "description": "Significant response time difference detected with payload in parameter 'action'",
+      "severity": "Medium",
+      "payload": "| cat /etc/passwd",
+      "evidence": "Baseline: 349.409654ms, Modified: 1.22505832s"
+    },
+    {
+      "type": "Potential Time-Based CommandInjection",
+      "description": "Significant response time difference detected with payload in parameter 'q'",
+      "severity": "Medium",
+      "payload": "| cat /etc/passwd",
+      "evidence": "Baseline: 349.409654ms, Modified: 1.232936328s"
+    },
+    {
+      "type": "Potential Time-Based CommandInjection",
+      "description": "Significant response time difference detected with payload in parameter 'name'",
+      "severity": "Medium",
+      "payload": "| cat /etc/passwd",
+      "evidence": "Baseline: 349.409654ms, Modified: 1.403752189s"
+    },
+    {
+      "type": "Potential Time-Based CommandInjection",
+      "description": "Significant response time difference detected with payload in parameter 'action'",
+      "severity": "Medium",
+      "payload": "; ls",
+      "evidence": "Baseline: 349.409654ms, Modified: 1.42063819s"
+    },
+    {
+      "type": "Potential Time-Based CommandInjection",
+      "description": "Significant response time difference detected with payload in parameter 'page'",
+      "severity": "Medium",
+      "payload": "| cat /etc/passwd",
+      "evidence": "Baseline: 349.409654ms, Modified: 1.231604318s"
+    },
+    {
+      "type": "Potential Time-Based CommandInjection",
+      "description": "Significant response time difference detected with payload in parameter 'search'",
+      "severity": "Medium",
+      "payload": "| cat /etc/passwd",
+      "evidence": "Baseline: 349.409654ms, Modified: 1.404463437s"
+    },
+    {
+      "type": "Potential Time-Based CommandInjection",
+      "description": "Significant response time difference detected with payload in parameter 'user'",
+      "severity": "Medium",
+      "payload": "| cat /etc/passwd",
+      "evidence": "Baseline: 349.409654ms, Modified: 1.404936432s"
+    },
+    {
+      "type": "Potential Time-Based CommandInjection",
+      "description": "Significant response time difference detected with payload in parameter 'id'",
+      "severity": "Medium",
+      "payload": "| cat /etc/passwd",
+      "evidence": "Baseline: 349.409654ms, Modified: 1.41280348s"
+    },
+    {
+      "type": "Potential Time-Based CommandInjection",
+      "description": "Significant response time difference detected with payload in parameter 'page'",
+      "severity": "Medium",
+      "payload": "; ls",
+      "evidence": "Baseline: 349.409654ms, Modified: 1.432120364s"
+    }
+  ]
+}

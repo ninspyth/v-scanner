@@ -1,0 +1,7 @@
+{
+  "message": "Advanced Differential Scan completed successfully",
+  "scanned_at": "2025-03-22T00:01:26.953169257+05:30",
+  "time_elapsed": "7.127385802s",
+  "url": "http://testphp.vulnweb.com/login.php",
+  "vulnerabilities": null
+}

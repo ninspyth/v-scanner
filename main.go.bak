@@ -28,6 +28,86 @@ type ScanResult struct {
 
 type VulnerabilityScanner struct{}
 
+func (vs *VulnerabilityScanner) checkCSRF(resp *http.Response) []Vulnerability {
+	var vulnerabilities []Vulnerability
+
+	// Check for CSRF token
+	csrfTokenHeaders := []string{
+		"X-CSRF-Token",
+		"X-XSRF-Token",
+		"Csrf-Token",
+	}
+
+	hasCsrfProtection := false
+	for _, header := range csrfTokenHeaders {
+		if resp.Header.Get(header) != "" {
+			hasCsrfProtection = true
+			break
+		}
+	}
+
+	if !hasCsrfProtection {
+		vulnerabilities = append(vulnerabilities, Vulnerability{
+			Type:        "CSRF Protection",
+			Description: "Missing CSRF token protection mechanism",
+			Severity:    "High",
+		})
+	}
+
+	return vulnerabilities
+}
+
+func (vs *VulnerabilityScanner) checkSQLInjection(targetURL string) []Vulnerability {
+	var vulnerabilities []Vulnerability
+
+	// List of potential SQL injection test payloads
+	sqlInjectionPayloads := []string{
+		"' OR '1'='1",
+		"\" OR \"1\"=\"1",
+		"1 OR 1=1",
+		"' OR 1=1--",
+		"1 OR 1=1--",
+		"1' ORDER BY 1--+",
+		"1' UNION SELECT 1,2,3--+",
+	}
+
+	for _, payload := range sqlInjectionPayloads {
+		// Prepare test URL with payload
+		testURL := fmt.Sprintf("%s?id=%s", targetURL, url.QueryEscape(payload))
+
+		client := &http.Client{
+			Timeout: 10 * time.Second,
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: false},
+			},
+		}
+
+		req, err := http.NewRequest("GET", testURL, nil)
+		if err != nil {
+			continue
+		}
+
+		req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+
+		resp, err := client.Do(req)
+		if err != nil {
+			continue
+		}
+		defer resp.Body.Close()
+
+		// Simple heuristic check for potential SQL injection vulnerability
+		if resp.StatusCode == 200 {
+			vulnerabilities = append(vulnerabilities, Vulnerability{
+				Type:        "SQL Injection",
+				Description: fmt.Sprintf("Potential SQL injection vulnerability detected with payload: %s", payload),
+				Severity:    "High",
+			})
+		}
+	}
+
+	return vulnerabilities
+}
+
 func (vs *VulnerabilityScanner) ScanURL(targetURL string) ScanResult {
 	result := ScanResult{
 		URL:       targetURL,
@@ -132,6 +212,14 @@ func (vs *VulnerabilityScanner) ScanURL(targetURL string) ScanResult {
 		})
 	}
 
+	// CSRF Check
+	csrfVulnerabilities := vs.checkCSRF(resp)
+	result.Vulnerabilities = append(result.Vulnerabilities, csrfVulnerabilities...)
+
+	// SQL Injection Check
+	sqlInjectionVulnerabilities := vs.checkSQLInjection(targetURL)
+	result.Vulnerabilities = append(result.Vulnerabilities, sqlInjectionVulnerabilities...)
+
 	return result
 }
 
@@ -188,3 +276,4 @@ func main() {
 	fmt.Printf("Server starting on port %s\n", port)
 	r.Run(port)
 }
+
